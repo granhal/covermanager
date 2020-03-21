@@ -1,0 +1,194 @@
+<div class="container mt-4">
+    <button class="btn btn-success" (click)="open(add, null, 'add')">Add expedient</button>&nbsp;
+    
+    <div class="row mt-4">
+
+      <div class="col-sm">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Number</th>
+              <th scope="col">Id studient</th>
+              <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let expedient of expedients; index as i">
+              <th scope="row">{{ expedient.id_expedient }}</th>
+              <td>{{ expedient.expedient_number }}</td>
+              <td>{{ expedient.id_student }}</td>
+              <td>
+                    <button class="btn btn-primary btn-sm" (click)="open(update, expedient, 'update')">Update</button>&nbsp;
+                    <button class="btn btn-danger btn-sm" (click)="open(delete, expedient, 'delete')">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+      </div>
+    </div><hr>
+    <button class="btn btn-success" (click)="openSubject(addsubject, null, 'add')">Add subject</button>
+  <div class="row mt-4">
+
+    <div class="col-sm">
+      <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Note</th>
+            <th scope="col">Id expedient</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let subject of subjects; index as i">
+            <th scope="row">{{ subject.id_subject }}</th>
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.note }}</td>
+            <td>{{ subject.id_expedient }}</td>
+            <td>
+                  <button class="btn btn-primary btn-sm" (click)="openSubject(updatesubject, subject, 'update')">Update</button>&nbsp;
+                  <button class="btn btn-danger btn-sm" (click)="openSubject(delete, subject, 'delete')">Delete</button>
+              </td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
+  <ng-template #add let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Number</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" #number>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-3 col-form-label">Id studient</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" #id_student>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close({ number: number.value, id_student: id_student.value })">Save</button>
+    </div>
+  </ng-template>
+  <ng-template #addsubject let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" #name>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-3 col-form-label">Note</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" #note>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-3 col-form-label">Id expediente</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" #id_expedient>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close({ note: note.value, name: name.value, id_expedient:id_expedient.value })">Save</button>
+    </div>
+  </ng-template>
+  <ng-template #update let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Number</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" #number value="{{expedient.expedient_number}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="b" class="col-sm-3 col-form-label">Id studient</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" #id_student value="{{expedient.id_student}}">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close({ number: number.value, id_student: id_student.value })">Save</button>
+      </div>
+  </ng-template>
+  <ng-template #updatesubject let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" #name value="{{subject.name}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="b" class="col-sm-3 col-form-label">Note</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" #note value="{{subject.note}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="b" class="col-sm-3 col-form-label">Id expediente</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" #id_expedient value="{{subject.id_expedient}}">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close({ note: note.value, name: name.value, id_expedient:id_expedient.value })">Save</button>
+      </div>
+  </ng-template>
+  <ng-template #delete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Delete</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure deleted this?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Accept</button>
+    </div>
+  </ng-template>

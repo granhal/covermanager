@@ -1,0 +1,162 @@
+  <div class="container mt-4">
+    <button class="btn btn-success" (click)="open(add, null, 'add')">Add student</button>
+
+    <input [(ngModel)]="searchText" placeholder="Filter by Name..." class="form-control mt-4">
+    <div class="row mt-4">
+
+      <div class="col-sm">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telephones</th>
+              <th scope="col">Expedients</th>
+              <th scope="col">Avg. notes</th>
+              <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let student of students | filter : searchText; index as i">
+              <th scope="row">{{ student.id_student }}</th>
+              <td>{{ student.name }}</td>
+              <td>{{ student.address }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.numbers }}</td>
+              <td>
+                <div *ngIf="student.expedients">
+                  <b *ngFor="let expedient of student.expedients.split(',')">
+                  <span class="btn btn-link btn-sm"  
+                  (click)="open(expedientmodal, expedient, 'expedient')"> 
+                  {{ expedient }}</span>
+                  </b>
+                </div>
+              </td>
+              <td>{{ isDecimalToFixed(student.avg_notes) }} </td>
+              <td>
+                    <button class="btn btn-primary btn-sm" (click)="open(update, student, 'update')">Update</button>&nbsp;
+                    <button class="btn btn-danger btn-sm" (click)="open(delete, student, 'delete')">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #add let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #name>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #address>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #email>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Telephones</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #telephones>
+          </div>
+        </div>
+      </form>
+      <small>* separated telephones by comma.</small>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close({ address: address.value, name: name.value, email:email.value, telephones: telephones.value })">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #update let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #name value="{{student.name}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #address value="{{student.address}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #email value="{{student.email}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="b" class="col-sm-2 col-form-label">Telephones</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" #telephones value="{{student.numbers}}">
+          </div>
+        </div>
+      </form>
+      <small>* separated telephones by comma.</small>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close({ address: address.value, name: name.value, email:email.value, telephones: telephones.value })">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #delete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Delete</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure deleted this student?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Accept</button>
+    </div>
+  </ng-template>
+
+  <ng-template #expedientmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Expedient</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Expedient:
+      <pre>{{expedient | json}}</pre>
+      Subjects:
+      <pre>{{subjects | json}}</pre>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Accept</button>
+    </div>
+  </ng-template>
